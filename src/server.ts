@@ -17,6 +17,10 @@ const getAllInterviewers = db.prepare(`
 SELECT * FROM interviewers
 `);
 
+const getAllInterviews = db.prepare(`
+SELECT * FROM interviews
+`);
+
 const getApplicantsById = db.prepare(`
 SELECT * FROM applicants WHERE id = @id;
 `);
@@ -33,6 +37,9 @@ app.get("/interviewers", (req, res) => {
 app.get("/applicants", (req, res) => {
   res.send(getAllApplicants.all());
 });
+app.get("/interviews", (req, res) => {
+    res.send(getAllInterviews.all());
+  });
 
 app.listen(port, () => {
   console.log(`

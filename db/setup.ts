@@ -12,7 +12,7 @@ const interviewers = [
   { id: 2, name: "Bill Gates", email: "billgates@email.com" },
 ];
 
-const interview = [
+const interviews = [
   {
     id: 1,
     aplicantsId: 1,
@@ -77,13 +77,13 @@ for (let person of interviewers) {
 }
 
 // Interview Setup
-const deleteInterviewTable = db.prepare(`
-DROP TABLE IF EXISTS interview
+const deleteInterviewsTable = db.prepare(`
+DROP TABLE IF EXISTS interviews
 `);
-deleteInterviewTable.run();
+deleteInterviewsTable.run();
 
-const createIntervieweTable = db.prepare(`
-CREATE TABLE IF NOT EXISTS interview(
+const createInterviewTable = db.prepare(`
+CREATE TABLE IF NOT EXISTS interviews(
     id INTEGER,
     applicantsId INTEGER,
     interviewersId INTEGER,
@@ -96,16 +96,16 @@ CREATE TABLE IF NOT EXISTS interview(
 )
 `);
 
-createIntervieweTable.run();
+createInterviewTable.run();
 
-const createIntervieweRow = db.prepare(`
-   INSERT INTO interview 
+const createInterviewRow = db.prepare(`
+   INSERT INTO interviews
    (applicantsId,interviewersId,interview,date) 
    VALUES 
    (@applicantsId,@interviewersId,@interview,@date)
 `);
-for (let item of interview)
-  createIntervieweRow.run({
+for (let item of interviews)
+  createInterviewRow.run({
     applicantsId: item.aplicantsId,
     interviewersId: item.interviewersId,
     interview: item.interview,
