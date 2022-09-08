@@ -3,14 +3,13 @@ import Database from "better-sqlite3";
 const db = Database("./db/data.db", { verbose: console.log });
 
 const applicants = [
-    { id: 1, name: "Jack", email:"jack@email.com" },
-    { id: 2, name: "Peter", email:"peter@email.com" },
-
+  { id: 1, name: "Jack", email: "jack@email.com" },
+  { id: 2, name: "Peter", email: "peter@email.com" },
 ];
 
 const interviewers = [
-    { id: 1, name: "Yi Lon Ma", email:"yilonma@email.com"},
-    { id: 2, name: "Bill Gates", email:"billgates@email.com" },
+  { id: 1, name: "Yi Lon Ma", email: "yilonma@email.com" },
+  { id: 2, name: "Bill Gates", email: "billgates@email.com" },
 ];
 
 const interview = [
@@ -41,14 +40,14 @@ const createApplicantsTable = db.prepare(`
       name TEXT NOT NULL,
       email TEXT,
       PRIMARY KEY (id)
-  );`);
+  )`);
 createApplicantsTable.run();
 
 const createApplicantsRow = db.prepare(`
     INSERT INTO applicants (name, email) VALUES (@name,@email);
     `);
 for (let person of applicants) {
-  createApplicantsRow.run({ name: person.name, email: person.email});
+  createApplicantsRow.run({ name: person.name, email: person.email });
 }
 
 // Interviewers Setup
@@ -62,14 +61,13 @@ const createInterviewersTable = db.prepare(`
         id INTEGER ,
         name TEXT NOT NULL,
         email TEXT,
-        PRIMARY KEY (id),
-        
+        PRIMARY KEY (id)
         )
     `);
 createInterviewersTable.run();
 
 const createInterviewersRow = db.prepare(`
- INSERT INTO interviewers (name,email) VALUES (name,email)`);
+ INSERT INTO interviewers (name,email) VALUES (@name,@email)`);
 
 for (let person of interviewers) {
   createInterviewersRow.run({
@@ -87,7 +85,7 @@ deleteInterviewTable.run();
 const createIntervieweTable = db.prepare(`
 CREATE TABLE IF NOT EXISTS interview(
     id INTEGER,
-    aplicantsId INTEGER,
+    applicantsId INTEGER,
     interviewersId INTEGER,
     interview INTEGER,
     date TEXT NOT NULL,
@@ -104,6 +102,12 @@ const createIntervieweRow = db.prepare(`
    INSERT INTO interview 
    (applicantsId,interviewersId,interview,date) 
    VALUES 
-   (@applicants,@interviewersId,@interview,@date)
+   (@applicantsId,@interviewersId,@interview,@date)
 `);
-for(let item of interview) createIntervieweRow.run(item)
+for (let item of interview)
+  createIntervieweRow.run({
+    applicantsId: item.aplicantsId,
+    interviewersId: item.interviewersId,
+    interview: item.interview,
+    date: item.date,
+  });
