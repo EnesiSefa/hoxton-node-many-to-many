@@ -76,7 +76,7 @@ for (let person of interviewers) {
   });
 }
 
-// Interview Setup
+// Interviews Setup
 const deleteInterviewsTable = db.prepare(`
 DROP TABLE IF EXISTS interviews
 `);
